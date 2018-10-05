@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GeometryVisualizer\GeometryVisualizer.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Unity3D.UnityEngine" Version="2018.1.6-f1" />
+  </ItemGroup>
+
+  <Target Name="CopyAssembly" AfterTargets="AfterBuild">
+    <Copy SourceFiles="bin/$(Configuration)/$(TargetFramework)/GeometryVisualizer.Unity.dll" DestinationFolder="../GeometryVisualizerUnityProject/Assets/Libraries/" />
+  </Target>
+
+</Project>

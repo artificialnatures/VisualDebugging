@@ -7,7 +7,8 @@ namespace GeometryVisualizer.Tests
         [Fact]
         public void CanCreateVisualizer()
         {
-            var visualizer = Factory.CreateVisualizer();
+            var scene = new TestScene();
+            var visualizer = VisualizerFactory.CreateVisualizer(scene);
             
             Assert.NotNull(visualizer);
         }
