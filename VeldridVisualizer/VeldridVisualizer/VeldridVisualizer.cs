@@ -16,6 +16,8 @@ namespace VeldridVisualizer
         private static Shader _fragmentShader;
         private static Pipeline _pipeline;
 
+        private static ShaderFactory _shaderFactory;
+
         public static void Start()
         {
             WindowCreateInfo windowCI = new WindowCreateInfo()
@@ -29,6 +31,8 @@ namespace VeldridVisualizer
             Sdl2Window window = VeldridStartup.CreateWindow(ref windowCI);
 
             _graphicsDevice = VeldridStartup.CreateGraphicsDevice(window);
+
+            _shaderFactory = new ShaderFactory();
 
             CreateResources();
 
@@ -103,28 +107,8 @@ namespace VeldridVisualizer
 
         private static Shader LoadShader(ShaderStages stage)
         {
-            string extension = null;
-            switch (_graphicsDevice.BackendType)
-            {
-                case GraphicsBackend.Direct3D11:
-                    extension = "hlsl.bytes";
-                    break;
-                case GraphicsBackend.Vulkan:
-                    extension = "spv";
-                    break;
-                case GraphicsBackend.OpenGL:
-                    extension = "glsl";
-                    break;
-                case GraphicsBackend.Metal:
-                    extension = "metallib";
-                    break;
-                default: throw new System.InvalidOperationException();
-            }
-
-            string entryPoint = stage == ShaderStages.Vertex ? "VS" : "FS";
-            string path = Path.Combine(System.AppContext.BaseDirectory, "Shaders", $"{stage.ToString()}.{extension}");
-            byte[] shaderBytes = File.ReadAllBytes(path);
-            return _graphicsDevice.ResourceFactory.CreateShader(new ShaderDescription(stage, shaderBytes, entryPoint));
+            var shaderDescription = _shaderFactory.GetShaderDescription(_graphicsDevice.BackendType, stage);
+            return _graphicsDevice.ResourceFactory.CreateShader(shaderDescription);
         }
 
         private static void Draw()

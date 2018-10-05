@@ -7,12 +7,12 @@ namespace VeldridVisualizer
 {
     public class ShaderFactory
     {
-        public Shader LoadShader(GraphicsDevice graphicsDevice, ShaderStages stage)
+        public ShaderDescription GetShaderDescription(GraphicsBackend graphicsBackend, ShaderStages stage)
         {
-            string extension = extensions[graphicsDevice.BackendType];
+            string extension = extensions[graphicsBackend];
             string entryPoint = stage == ShaderStages.Vertex ? "VS" : "FS";
             var shaderName = $"{stage.ToString()}.{extension}";
-            return graphicsDevice.ResourceFactory.CreateShader(new ShaderDescription(stage, shaders[shaderName], entryPoint));
+            return new ShaderDescription(stage, shaders[shaderName], entryPoint);
         }
         
         public ShaderFactory()
