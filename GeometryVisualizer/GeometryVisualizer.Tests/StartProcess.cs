@@ -1,4 +1,3 @@
-using System.Threading;
 using GeometryVisualizer.Process;
 using Xunit;
 
@@ -12,7 +11,16 @@ namespace GeometryVisualizer.Tests
             var factory = new ProcessFactory();
             var visualizerProcess = factory.CreateVisualizerProcess(VisualizerType.Unity);
             visualizerProcess.Start();
-            Thread.Sleep(5000);
+            visualizerProcess.Stop();
+        }
+
+        [Fact]
+        public void CanCommunicateWithProcess()
+        {
+            var factory = new ProcessFactory();
+            var visualizerProcess = factory.CreateVisualizerProcess(VisualizerType.Unity);
+            visualizerProcess.Start();
+            //
             visualizerProcess.Stop();
         }
     }

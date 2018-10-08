@@ -15,6 +15,11 @@ namespace GeometryVisualizer.Process
             process = System.Diagnostics.Process.Start(startInfo);
         }
 
+        public void DisplayMesh(VisualizerMesh mesh)
+        {
+            
+        }
+
         public void Stop()
         {
             process?.Kill();
@@ -73,8 +78,8 @@ namespace GeometryVisualizer.Process
         
         private static readonly Dictionary<string, string> executableMap = new Dictionary<string, string>
         {
-            { "win", Path.Combine("UnityVisualizer", "GeometryVisualizer", "GeometryVisualizer.exe") },
-            { "mac", Path.Combine("UnityVisualizer", "GeometryVisualizer.app", "Contents", "MacOS", "GeometryVisualizer") }
+            { "win", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "UnityVisualizer", "GeometryVisualizer", "GeometryVisualizer.exe") },
+            { "mac", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "UnityVisualizer", "GeometryVisualizer.app", "Contents", "MacOS", "GeometryVisualizer") }
         };
     }
 }

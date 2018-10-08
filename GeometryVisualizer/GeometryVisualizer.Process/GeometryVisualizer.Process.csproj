@@ -7,5 +7,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Executables\**" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\GeometryVisualizer\GeometryVisualizer.csproj" />
+  </ItemGroup>
 
 </Project>
