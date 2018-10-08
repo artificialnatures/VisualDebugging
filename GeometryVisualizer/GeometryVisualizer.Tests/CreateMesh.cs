@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 using Xunit;
 
 namespace GeometryVisualizer.Tests
@@ -11,7 +10,7 @@ namespace GeometryVisualizer.Tests
         [Fact]
         public void CanCreateMesh()
         {
-            var label = "Mesh123";
+            var label = "Plane";
             var color = new[] { 0.2f, 0.4f, 0.6f, 1f };
             var vertices = new[]
             {
