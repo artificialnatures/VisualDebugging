@@ -1,8 +1,8 @@
 namespace GeometryVisualizer.Unity
 {
-    public static class UnitySceneFactory
+    public class UnitySceneFactory
     {
-        public static Scene CreateScene()
+        public Scene CreateScene()
         {
             return new UnityScene();
         }

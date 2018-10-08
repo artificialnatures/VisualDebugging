@@ -4,23 +4,17 @@ using GeometryVisualizer.Unity;
 
 namespace GeometryVisualizer.Unity
 {
-	public class Bootstrapper : MonoBehaviour 
+	internal class Bootstrapper : MonoBehaviour 
 	{
-		public void ReportMouseMovement(Vector3 movement)
-		{
-			
-		}
-		
 		void Start ()
 		{
-			scene = UnitySceneFactory.CreateScene();
-		}
-
-		void Update () 
-		{
-		
+			var sceneFactory = new UnitySceneFactory();
+			scene = sceneFactory.CreateScene();
+			var visualizerFactory = new VisualizerFactory();
+			visualizer = visualizerFactory.CreateVisualizer(scene);
 		}
 
 		private Scene scene;
+		private Visualizer visualizer;
 	}
 }

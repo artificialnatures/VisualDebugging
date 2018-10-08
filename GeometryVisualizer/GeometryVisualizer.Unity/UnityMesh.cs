@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace GeometryVisualizer.Unity
 {
-    internal class UnityMesh : UnityNode
+    internal sealed class UnityMesh : UnityNode
     {
         public UnityMesh(VisualizerMesh visualizerMesh, UnityNode parent, string label) : base(parent, label)
         {
