@@ -2,11 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <OutputPath>..\Package\lib\</OutputPath>
   </PropertyGroup>
-  
-  <ItemGroup>
-    <EmbeddedResource Include="Executables\**" />
-  </ItemGroup>
   
   <ItemGroup>
     <ProjectReference Include="..\GeometryVisualizer.Communication\GeometryVisualizer.Communication.csproj" />

@@ -20,15 +20,22 @@ namespace GeometryVisualizer.Process
 
         public void Stop()
         {
-            process?.Kill();
+            if (process == null) return;
+            if (process.HasExited) return;
+            process.Kill();
         }
 
         public UnityVisualizerProcess(Communicator communicator)
         {
             var platformIdentifier = GetPlatformIdentifier();
+            executableMap = CreateExecutableMap();
             if (executableMap.ContainsKey(platformIdentifier))
             {
-                if (!File.Exists(executableMap[platformIdentifier]))
+                if (File.Exists(executableMap[platformIdentifier]))
+                {
+                    //TODO: check version, unpack if newer version available
+                }
+                else
                 {
                     UnpackVisualizerApp(platformIdentifier);
                 }
@@ -38,11 +45,21 @@ namespace GeometryVisualizer.Process
             Communicator = communicator;
         }
 
+        private Dictionary<string, string> CreateExecutableMap()
+        {
+            return new Dictionary<string, string>
+            {
+                { "win32", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, executableDirectory, "win32", "GeometryVisualizer", "GeometryVisualizer.exe") },
+                { "win64", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, executableDirectory, "win64", "GeometryVisualizer", "GeometryVisualizer.exe") },
+                { "macOS", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, executableDirectory, "macOS", "GeometryVisualizer.app", "Contents", "MacOS", "GeometryVisualizer") }
+            };
+        }
+
         private void UnpackVisualizerApp(string platformIdentifier)
         {
             var executableZipFile = GetExecutableZipFile(platformIdentifier);
             var appPath = AppDomain.CurrentDomain.BaseDirectory;
-            var unzipPath = Path.Combine(appPath, "UnityVisualizer");
+            var unzipPath = Path.Combine(appPath, executableDirectory);
             using (var archive = new ZipArchive(executableZipFile, ZipArchiveMode.Read))
             {
                 archive.ExtractToDirectory(unzipPath);
@@ -51,16 +68,17 @@ namespace GeometryVisualizer.Process
 
         private ProcessStartInfo GetStartInfo(string platformIdentifier)
         {
-            var startInfo = new ProcessStartInfo(executableMap[platformIdentifier]);
-            startInfo.WindowStyle = ProcessWindowStyle.Normal;
-            return startInfo;
+            var info = new ProcessStartInfo(executableMap[platformIdentifier]);
+            info.Arguments = " -nolog";
+            info.WindowStyle = ProcessWindowStyle.Normal;
+            return info;
         }
 
         private Stream GetExecutableZipFile(string platformIdentifier)
         {
             var assembly = GetType().Assembly;
             var resourceNames = assembly.GetManifestResourceNames();
-            var matchingResource = resourceNames.First(rn => rn.Contains("UnityVisualizer") && rn.Contains(platformIdentifier) && rn.Contains("zip"));
+            var matchingResource = resourceNames.First(rn => rn.Contains(executableDirectory) && rn.Contains(platformIdentifier) && rn.Contains("zip"));
             if (matchingResource == null) return null;
             return assembly.GetManifestResourceStream(matchingResource);
         }
@@ -76,10 +94,8 @@ namespace GeometryVisualizer.Process
 
         private System.Diagnostics.Process process;
         
-        private static readonly Dictionary<string, string> executableMap = new Dictionary<string, string>
-        {
-            { "win", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "UnityVisualizer", "GeometryVisualizer", "GeometryVisualizer.exe") },
-            { "mac", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "UnityVisualizer", "GeometryVisualizer.app", "Contents", "MacOS", "GeometryVisualizer") }
-        };
+        private Dictionary<string, string> executableMap;
+
+        private static readonly string executableDirectory = "GeometryVisualizer";
     }
 }
