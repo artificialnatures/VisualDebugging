@@ -4,11 +4,14 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using GeometryVisualizer.Communication;
 
 namespace GeometryVisualizer.Process
 {
     internal class UnityVisualizerProcess : VisualizerProcess
     {
+        public Communicator Communicator { get; }
+        
         public void Start()
         {
             if (startInfo == null) return;
@@ -20,7 +23,7 @@ namespace GeometryVisualizer.Process
             process?.Kill();
         }
 
-        public UnityVisualizerProcess()
+        public UnityVisualizerProcess(Communicator communicator)
         {
             var platformIdentifier = GetPlatformIdentifier();
             if (executableMap.ContainsKey(platformIdentifier))
@@ -31,6 +34,8 @@ namespace GeometryVisualizer.Process
                 }
                 startInfo = GetStartInfo(platformIdentifier);
             }
+
+            Communicator = communicator;
         }
 
         private void UnpackVisualizerApp(string platformIdentifier)

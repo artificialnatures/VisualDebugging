@@ -9,6 +9,7 @@
   </ItemGroup>
   
   <ItemGroup>
+    <ProjectReference Include="..\GeometryVisualizer.Communication\GeometryVisualizer.Communication.csproj" />
     <ProjectReference Include="..\GeometryVisualizer\GeometryVisualizer.csproj" />
   </ItemGroup>
 

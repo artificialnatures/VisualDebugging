@@ -1,6 +1,6 @@
 using System.IO.Pipes;
 
-namespace GeometryVisualizer.Process
+namespace GeometryVisualizer.Communication
 {
     internal class PipeCommunicator : Communicator
     {
@@ -9,9 +9,9 @@ namespace GeometryVisualizer.Process
             throw new System.NotImplementedException();
         }
 
-        public PipeCommunicator()
+        public PipeCommunicator(Serializer serializer)
         {
-            serializer = new BinarySerializer();
+            this.serializer = serializer;
         }
 
         private Serializer serializer;

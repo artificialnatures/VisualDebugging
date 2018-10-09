@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace GeometryVisualizer.Process
+namespace GeometryVisualizer.Communication
 {
     [Serializable]
     internal class Transaction

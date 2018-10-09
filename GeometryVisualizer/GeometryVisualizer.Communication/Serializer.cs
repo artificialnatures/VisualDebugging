@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace GeometryVisualizer.Process
+namespace GeometryVisualizer.Communication
 {
     internal interface Serializer
     {

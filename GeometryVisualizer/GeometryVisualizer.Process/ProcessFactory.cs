@@ -1,10 +1,14 @@
+using GeometryVisualizer.Communication;
+
 namespace GeometryVisualizer.Process
 {
     public class ProcessFactory
     {
         public VisualizerProcess CreateVisualizerProcess(VisualizerType visualizerType)
         {
-            if (visualizerType == VisualizerType.Unity) return new UnityVisualizerProcess();
+            var factory = new CommunicatorFactory();
+            var communicator = factory.CreateCommunicator();
+            if (visualizerType == VisualizerType.Unity) return new UnityVisualizerProcess(communicator);
             return null;
         }
     }

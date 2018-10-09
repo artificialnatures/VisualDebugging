@@ -1,7 +1,7 @@
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace GeometryVisualizer.Process
+namespace GeometryVisualizer.Communication
 {
     internal class BinarySerializer : Serializer
     {
