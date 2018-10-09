@@ -20,7 +20,9 @@ namespace GeometryVisualizer.Tests
             var factory = new ProcessFactory();
             var visualizerProcess = factory.CreateVisualizerProcess(VisualizerType.Unity);
             visualizerProcess.Start();
-            //
+            //TODO: Create named pipe server and client...
+            //TODO: Create transport structure for sending data...
+            //TODO: Create a console app to test...
             visualizerProcess.Stop();
         }
     }

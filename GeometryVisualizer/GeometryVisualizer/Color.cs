@@ -1,7 +1,9 @@
+using System;
 using System.Numerics;
 
 namespace GeometryVisualizer
 {
+    [Serializable]
     internal class Color : VisualizerColor
     {
         public float Red => vector.X;

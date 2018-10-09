@@ -15,11 +15,6 @@ namespace GeometryVisualizer.Process
             process = System.Diagnostics.Process.Start(startInfo);
         }
 
-        public void DisplayMesh(VisualizerMesh mesh)
-        {
-            
-        }
-
         public void Stop()
         {
             process?.Kill();

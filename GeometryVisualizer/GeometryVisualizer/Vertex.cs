@@ -1,7 +1,9 @@
+using System;
 using System.Numerics;
 
 namespace GeometryVisualizer
 {
+    [Serializable]
     internal class Vertex : VisualizerVertex
     {
         public float X => vector.X;
