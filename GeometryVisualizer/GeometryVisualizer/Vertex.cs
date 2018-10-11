@@ -1,22 +1,21 @@
 using System;
-using System.Numerics;
 
 namespace GeometryVisualizer
 {
     [Serializable]
     internal class Vertex : VisualizerVertex
     {
-        public float X => vector.X;
+        public float X { get; }
 
-        public float Y => vector.Y;
+        public float Y { get; }
 
-        public float Z => vector.Z;
+        public float Z { get; }
 
         public Vertex(float x, float y, float z)
         {
-            vector = new Vector3(x, y, z);
+            X = x;
+            Y = y;
+            Z = z;
         }
-        
-        private Vector3 vector;
     }
 }

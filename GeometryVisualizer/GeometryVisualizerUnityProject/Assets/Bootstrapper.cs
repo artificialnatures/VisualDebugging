@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using GeometryVisualizer;
+using GeometryVisualizer.Communication;
 using GeometryVisualizer.Unity;
 
 namespace GeometryVisualizer.Unity
@@ -14,7 +15,13 @@ namespace GeometryVisualizer.Unity
 			visualizer = visualizerFactory.CreateVisualizer(scene);
 		}
 
+		void Update()
+		{
+			visualizer.Receive();
+		}
+
 		private Scene scene;
 		private Visualizer visualizer;
+		private Communicator communicator;
 	}
 }

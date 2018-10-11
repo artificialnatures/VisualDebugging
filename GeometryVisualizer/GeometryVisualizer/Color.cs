@@ -1,24 +1,24 @@
 using System;
-using System.Numerics;
 
 namespace GeometryVisualizer
 {
     [Serializable]
     internal class Color : VisualizerColor
     {
-        public float Red => vector.X;
+        public float Red { get; }
         
-        public float Green => vector.Y;
+        public float Green { get; }
         
-        public float Blue => vector.Z;
+        public float Blue { get; }
         
-        public float Alpha => vector.W;
+        public float Alpha { get; }
 
         public Color(float red, float green, float blue, float alpha)
         {
-            vector = new Vector4(red, green, blue, alpha);
+            Red = red;
+            Green = green;
+            Blue = blue;
+            Alpha = alpha;
         }
-
-        private Vector4 vector;
     }
 }

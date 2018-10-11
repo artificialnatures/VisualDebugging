@@ -2,10 +2,14 @@ namespace GeometryVisualizer.Communication
 {
     public class CommunicatorFactory
     {
-        public Communicator CreateCommunicator()
+        public Communicator CreatePrimaryCommunicator(Serializer serializer)
         {
-            var serializer = new BinarySerializer();
-            return new PipeCommunicator(serializer);
+            return new PrimaryPipeCommunicator(serializer);
+        }
+        
+        public Communicator CreateSecondaryCommunicator(Serializer serializer)
+        {
+            return new SecondaryPipeCommunicator(serializer);
         }
     }
 }

@@ -2,16 +2,18 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <OutputPath>../Package/lib/</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GeometryVisualizer.Communication\GeometryVisualizer.Communication.csproj" />
+  </ItemGroup>
   
   <Target Name="CopyAssembly" AfterTargets="AfterBuild">
-    <Copy SourceFiles="bin/$(Configuration)/$(TargetFramework)/GeometryVisualizer.dll" 
-          DestinationFolder="../GeometryVisualizerUnityProject/Assets/Libraries/" />
+    <Copy SourceFiles="bin/$(Configuration)/$(TargetFramework)/GeometryVisualizer.dll" DestinationFolder="../GeometryVisualizerUnityProject/Assets/Libraries/" />
   </Target>
 
 </Project>

@@ -6,8 +6,10 @@ namespace GeometryVisualizer.Process
     {
         public VisualizerProcess CreateVisualizerProcess(VisualizerType visualizerType)
         {
-            var factory = new CommunicatorFactory();
-            var communicator = factory.CreateCommunicator();
+            var serializerFactory = new SerializerFactory();
+            var serializer = serializerFactory.CreateSerializer();
+            var communicatorFactory = new CommunicatorFactory();
+            var communicator = communicatorFactory.CreateSecondaryCommunicator(serializer);
             if (visualizerType == VisualizerType.Unity) return new UnityVisualizerProcess(communicator);
             return null;
         }

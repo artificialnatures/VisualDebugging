@@ -3,8 +3,10 @@ using UnityEngine;
 
 namespace GeometryVisualizer.Unity
 {
-    internal class UnityNode
+    internal class UnityNode : VisualizerNode
     {
+        public string Label { get; }
+        
         public Transform Transform => gameObject.transform;
 
         public void Reset()
@@ -20,6 +22,7 @@ namespace GeometryVisualizer.Unity
         
         public UnityNode(UnityNode parent, string label) : this(label)
         {
+            Label = label;
             gameObject.transform.SetParent(parent.Transform);
         }
         

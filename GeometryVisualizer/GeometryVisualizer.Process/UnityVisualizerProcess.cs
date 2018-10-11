@@ -16,6 +16,7 @@ namespace GeometryVisualizer.Process
         {
             if (startInfo == null) return;
             process = System.Diagnostics.Process.Start(startInfo);
+            Communicator.Connect();
         }
 
         public void Stop()

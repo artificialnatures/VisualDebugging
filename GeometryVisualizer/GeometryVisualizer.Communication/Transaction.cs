@@ -4,7 +4,7 @@ using System.IO;
 namespace GeometryVisualizer.Communication
 {
     [Serializable]
-    internal class Transaction
+    public class Transaction
     {
         public string PayloadType { get; }
         
@@ -12,7 +12,7 @@ namespace GeometryVisualizer.Communication
 
         public Transaction(Type payloadType, Stream payload)
         {
-            PayloadType = payloadType.FullName;
+            PayloadType = payloadType.Name;
             byte[] bytes = new byte[payload.Length];
             payload.Read(bytes, 0, bytes.Length);
             Payload = bytes;

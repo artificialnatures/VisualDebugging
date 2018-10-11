@@ -1,7 +1,11 @@
+using System.Collections.Generic;
+
 namespace GeometryVisualizer.Unity
 {
     internal class UnityScene : Scene
     {
+        public IEnumerable<VisualizerNode> Nodes => nodes;
+        
         public void SetBackgroundColor(float red, float green, float blue)
         {
             camera.SetColor(red, green, blue);
@@ -22,10 +26,10 @@ namespace GeometryVisualizer.Unity
             camera.Zoom(delta);
         }
 
-
         public void AddMesh(VisualizerMesh mesh)
         {
             var meshNode = new UnityMesh(mesh, rootNode, mesh.Label);
+            nodes.Add(meshNode);
         }
 
         public void Reset()
@@ -36,10 +40,12 @@ namespace GeometryVisualizer.Unity
         public UnityScene()
         {
             rootNode = new UnityNode("Scene");
+            nodes = new List<VisualizerNode>();
             camera = new UnityCamera();
         }
 
         private UnityNode rootNode;
+        private List<VisualizerNode> nodes;
         private UnityCamera camera;
     }
 }
