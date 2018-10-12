@@ -28,7 +28,7 @@ namespace GeometryVisualizer.Unity
 
         public void AddMesh(VisualizerMesh mesh)
         {
-            var meshNode = new UnityMesh(mesh, rootNode, mesh.Label);
+            var meshNode = new UnityMesh(assetCollection, mesh, rootNode, mesh.Label);
             nodes.Add(meshNode);
         }
 
@@ -37,13 +37,15 @@ namespace GeometryVisualizer.Unity
             throw new System.NotImplementedException();
         }
         
-        public UnityScene()
+        public UnityScene(AssetCollection assetCollection)
         {
+            this.assetCollection = assetCollection;
             rootNode = new UnityNode("Scene");
             nodes = new List<VisualizerNode>();
             camera = new UnityCamera();
         }
 
+        private AssetCollection assetCollection;
         private UnityNode rootNode;
         private List<VisualizerNode> nodes;
         private UnityCamera camera;

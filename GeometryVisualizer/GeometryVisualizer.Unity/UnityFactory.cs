@@ -11,7 +11,14 @@ namespace GeometryVisualizer.Unity
         
         public Scene CreateScene()
         {
-            return new UnityScene();
+            return new UnityScene(assetCollection);
         }
+
+        public UnityFactory()
+        {
+            assetCollection = new UnityAssetCollection();
+        }
+
+        private AssetCollection assetCollection;
     }
 }

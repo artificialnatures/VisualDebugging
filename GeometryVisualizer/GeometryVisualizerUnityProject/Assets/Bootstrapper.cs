@@ -15,15 +15,6 @@ namespace GeometryVisualizer.Unity
 			var communicatorFactory = new CommunicatorFactory();
 			communicator = communicatorFactory.CreateSecondaryCommunicator(serializer);
 			visualizer = factory.CreateVisualizer(scene, serializer, communicator);
-			Task.Delay(500).Wait();
-			if (communicator.IsConnected)
-			{
-				Debug.Log("Communicator connected.");
-			}
-			else
-			{
-				Debug.Log("Communicator could not connect.");
-			}
 		}
 
 		void Update()
