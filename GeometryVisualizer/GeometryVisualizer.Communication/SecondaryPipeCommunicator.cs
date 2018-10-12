@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using System.IO.Pipes;
 using System.Threading.Tasks;
 
@@ -7,6 +9,7 @@ namespace GeometryVisualizer.Communication
     {
         public override void Connect()
         {
+            if (pipe == null) return;
             Task.Run(() =>
             {
                 ((NamedPipeClientStream) pipe).Connect();
@@ -16,12 +19,30 @@ namespace GeometryVisualizer.Communication
 
         public override void Disconnect()
         {
-            ((NamedPipeClientStream) pipe).Close();
+            if (pipe == null) return;
+            var secondary = (NamedPipeClientStream)pipe;
+            if (secondary.IsConnected) secondary.Close();
+            IsConnected = false;
         }
         
         public SecondaryPipeCommunicator(Serializer serializer) : base(serializer)
         {
-            pipe = new NamedPipeClientStream(".", pipeName, PipeDirection.InOut);
+            pipe = CreatePipe();
+        }
+        
+        private PipeStream CreatePipe()
+        {
+            PipeStream pipeStream = null;
+            try
+            {
+                pipeStream = new NamedPipeClientStream(".", pipeName, PipeDirection.InOut);
+            }
+            catch (IOException exception)
+            {
+                Console.WriteLine("Could not create secondary communicator: " + exception.Message);
+            }
+
+            return pipeStream;
         }
     }
 }

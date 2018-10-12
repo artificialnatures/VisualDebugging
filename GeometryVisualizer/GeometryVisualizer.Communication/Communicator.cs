@@ -4,6 +4,8 @@ namespace GeometryVisualizer.Communication
 {
     public interface Communicator
     {
+        bool IsConnected { get; }
+        
         void Connect();
 
         void Disconnect();

@@ -12,7 +12,7 @@ namespace GeometryVisualizer.Tests
             var factory = new SerializerFactory();
             var serializer = factory.CreateSerializer();
 
-            var stream = serializer.Serialize(name);
+            var stream = serializer.SerializeToStream(name);
             var deserializedName = serializer.Deserialize<string>(stream);
             
             Assert.Equal(name, deserializedName);
@@ -26,9 +26,9 @@ namespace GeometryVisualizer.Tests
             var factory = new SerializerFactory();
             var serializer = factory.CreateSerializer();
             
-            var transaction = new Transaction(typeof(VisualizerMesh), serializer.Serialize(plane));
+            var transaction = new Transaction(typeof(VisualizerMesh), serializer.SerializeToStream(plane));
 
-            var stream = serializer.Serialize(transaction);
+            var stream = serializer.SerializeToStream(transaction);
             var deserializedTransaction = serializer.Deserialize<Transaction>(stream);
             
             Assert.Equal(typeof(VisualizerMesh).Name, transaction.PayloadType);

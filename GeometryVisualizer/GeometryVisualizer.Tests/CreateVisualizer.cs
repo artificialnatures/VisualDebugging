@@ -8,20 +8,6 @@ namespace GeometryVisualizer.Tests
     public class CreateVisualizer
     {
         [Fact]
-        public void CanCreateVisualizer()
-        {
-            var serializerFactory = new SerializerFactory();
-            var serializer = serializerFactory.CreateSerializer();
-            var communicatorFactory = new CommunicatorFactory();
-            var communicator = communicatorFactory.CreatePrimaryCommunicator(serializer);
-            var scene = new TestScene();
-            var visualizerFactory = new VisualizerFactory();
-            var visualizer = visualizerFactory.CreateVisualizer(scene, serializer, communicator);
-            
-            Assert.NotNull(visualizer);
-        }
-        
-        [Fact]
         public void CanCommunicate()
         {
             var scene = new TestScene();
@@ -34,6 +20,8 @@ namespace GeometryVisualizer.Tests
             var primaryVisualizer = visualizerFactory.CreateVisualizer(scene, serializer, primaryCommunicator);
             secondaryCommunicator.Connect();
 
+            Task.Delay(500).Wait();
+            
             var expectedLabel = "Plane";
             var plane = TestGeometry.CreateUnitPlane(expectedLabel);
             secondaryCommunicator.Send(plane);
@@ -45,6 +33,9 @@ namespace GeometryVisualizer.Tests
             
             Assert.Equal(1, nodes.Length);
             Assert.Equal(expectedLabel, nodes[0].Label);
+            
+            secondaryCommunicator.Disconnect();
+            primaryCommunicator.Disconnect();
         }
     }
 }

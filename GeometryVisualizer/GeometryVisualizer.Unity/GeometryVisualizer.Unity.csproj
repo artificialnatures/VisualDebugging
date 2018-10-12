@@ -14,6 +14,7 @@
 
   <Target Name="CopyAssembly" AfterTargets="AfterBuild">
     <Copy SourceFiles="bin/$(Configuration)/$(TargetFramework)/GeometryVisualizer.Unity.dll" DestinationFolder="../GeometryVisualizerUnityProject/Assets/Libraries/" />
+    <Copy SourceFiles="bin/$(Configuration)/$(TargetFramework)/GeometryVisualizer.Unity.pdb" DestinationFolder="../GeometryVisualizerUnityProject/Assets/Libraries/" />
   </Target>
 
 </Project>

@@ -6,9 +6,20 @@ namespace GeometryVisualizer.Communication
 {
     internal class BinarySerializer : Serializer
     {
-        public Stream Serialize(object serializable)
+        public Stream SerializeToStream(object serializable)
         {
             return GetStream(serializable);
+        }
+
+        public byte[] SerializeToByteArray(object serializble)
+        {
+            using (var stream = GetStream(serializble))
+            {
+                Rewind(stream);
+                var bytes = new byte[stream.Length];
+                stream.Read(bytes, 0, bytes.Length);
+                return bytes;
+            }
         }
 
         public T Deserialize<T>(Stream stream)
@@ -26,6 +37,15 @@ namespace GeometryVisualizer.Communication
             var deserialized = Deserialize<T>(stream);
             stream.Close();
             return deserialized;
+        }
+
+        public byte[] GetBytes(Stream stream)
+        {
+            var buffer = new byte[4096];
+            var dataLength = stream.Read(buffer, 0, buffer.Length);
+            var bytes = new byte[dataLength];
+            Array.Copy(buffer, bytes, bytes.Length);
+            return bytes;
         }
 
         public BinarySerializer()

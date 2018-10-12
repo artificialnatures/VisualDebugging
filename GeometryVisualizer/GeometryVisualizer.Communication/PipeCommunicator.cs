@@ -6,6 +6,8 @@ namespace GeometryVisualizer.Communication
 {
     internal abstract class PipeCommunicator : Communicator
     {
+        public bool IsConnected { get; protected set; }
+        
         public bool HasReceivedTransactions => receiveQueue.Count > 0;
 
         public abstract void Connect();
@@ -14,7 +16,7 @@ namespace GeometryVisualizer.Communication
 
         public void Send<T>(T data)
         {
-            sendQueue.Enqueue(new Transaction(typeof(T), serializer.Serialize(data)));
+            sendQueue.Enqueue(new Transaction(typeof(T), serializer.SerializeToStream(data)));
         }
 
         public Transaction Receive()
@@ -35,6 +37,7 @@ namespace GeometryVisualizer.Communication
         {
             SendContinuously();
             ReceiveContinuously();
+            IsConnected = true;
         }
 
         private void ReceiveContinuously()
@@ -62,7 +65,7 @@ namespace GeometryVisualizer.Communication
                     if (sendQueue.Count > 0)
                     {
                         sendQueue.TryDequeue(out var transaction);
-                        var stream = serializer.Serialize(transaction);
+                        var stream = serializer.SerializeToStream(transaction);
                         stream.CopyTo(pipe);
                         stream.Close();
                         pipe.Flush();
@@ -73,7 +76,7 @@ namespace GeometryVisualizer.Communication
             });
         }
 
-        protected static readonly string pipeName = "GeometryVisualizer";
+        protected static readonly string pipeName = "GeometryVisualizer.Pipe";
         protected PipeStream pipe;
         
         private Serializer serializer;

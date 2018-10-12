@@ -1,8 +1,9 @@
 using GeometryVisualizer.Communication;
+using UnityEngine;
 
-namespace GeometryVisualizer
+namespace GeometryVisualizer.Unity
 {
-    internal class BasicVisualizer : Visualizer
+    internal class UnityVisualizer : UnityNode, Visualizer
     {
         public void Send<T>(T data)
         {
@@ -14,30 +15,29 @@ namespace GeometryVisualizer
             if (communicator == null || !communicator.HasReceivedTransactions) return;
             RouteTransaction(communicator.Receive());
         }
-
-        public BasicVisualizer(Scene scene, Serializer serializer, Communicator communicator)
+        
+        public UnityVisualizer(Scene scene, Serializer serializer, Communicator communicator) : base("Visualizer")
         {
             this.scene = scene;
             this.serializer = serializer;
             this.communicator = communicator;
-            this.communicator?.Connect();
+            this.communicator.Connect();
         }
-
+        
         private void RouteTransaction(Transaction transaction)
         {
             if (transaction.PayloadType == typeof(VisualizerMesh).Name)
             {
-                scene.AddMesh(serializer.Deserialize<Mesh>(transaction.Payload));
+                scene.AddMesh(serializer.Deserialize<VisualizerMesh>(transaction.Payload));
             }
 
             if (transaction.PayloadType == typeof(string).Name)
             {
                 var message = serializer.Deserialize<string>(transaction.Payload);
-                switch (message)
+                if (message == "quit")
                 {
-                    case "quit":
-                        communicator.Disconnect();
-                        break;
+                    communicator.Disconnect();
+                    Application.Quit();
                 }
             }
         }

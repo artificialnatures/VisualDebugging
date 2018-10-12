@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Threading.Tasks;
 using GeometryVisualizer.Communication;
 
 namespace GeometryVisualizer.Process
@@ -15,15 +16,19 @@ namespace GeometryVisualizer.Process
         public void Start()
         {
             if (startInfo == null) return;
-            process = System.Diagnostics.Process.Start(startInfo);
             Communicator.Connect();
+            Task.Delay(500).Wait();
+            process = System.Diagnostics.Process.Start(startInfo);
+            Task.Delay(500).Wait();
+            if (Communicator.IsConnected) Console.WriteLine("Connected to visualizer.");
         }
 
         public void Stop()
         {
             if (process == null) return;
             if (process.HasExited) return;
-            process.Kill();
+            Communicator.Send("quit");
+            Communicator.Disconnect();
         }
 
         public UnityVisualizerProcess(Communicator communicator)
