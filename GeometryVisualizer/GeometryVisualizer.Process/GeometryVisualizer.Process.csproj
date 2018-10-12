@@ -9,4 +9,17 @@
     <ProjectReference Include="..\GeometryVisualizer\GeometryVisualizer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="$(SolutionDir)\Package\contentFiles\**" CopyToOutputDirectory="PreserveNewest" />
+    <None Remove="GeometryVisualizer\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="GeometryVisualizer\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="GeometryVisualizer\**" />
+  </ItemGroup>
+
 </Project>
