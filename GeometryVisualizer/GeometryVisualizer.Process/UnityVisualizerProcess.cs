@@ -37,14 +37,6 @@ namespace GeometryVisualizer.Process
             executableMap = CreateExecutableMap();
             if (executableMap.ContainsKey(platformIdentifier))
             {
-                if (File.Exists(executableMap[platformIdentifier]))
-                {
-                    //TODO: check version, unpack if newer version available
-                }
-                else
-                {
-                    UnpackVisualizerApp(platformIdentifier);
-                }
                 startInfo = GetStartInfo(platformIdentifier);
             }
 
@@ -61,32 +53,12 @@ namespace GeometryVisualizer.Process
             };
         }
 
-        private void UnpackVisualizerApp(string platformIdentifier)
-        {
-            var executableZipFile = GetExecutableZipFile(platformIdentifier);
-            var appPath = AppDomain.CurrentDomain.BaseDirectory;
-            var unzipPath = Path.Combine(appPath, executableDirectory);
-            using (var archive = new ZipArchive(executableZipFile, ZipArchiveMode.Read))
-            {
-                archive.ExtractToDirectory(unzipPath);
-            }
-        }
-
         private ProcessStartInfo GetStartInfo(string platformIdentifier)
         {
             var info = new ProcessStartInfo(executableMap[platformIdentifier]);
             info.Arguments = " -nolog";
             info.WindowStyle = ProcessWindowStyle.Normal;
             return info;
-        }
-
-        private Stream GetExecutableZipFile(string platformIdentifier)
-        {
-            var assembly = GetType().Assembly;
-            var resourceNames = assembly.GetManifestResourceNames();
-            var matchingResource = resourceNames.First(rn => rn.Contains(executableDirectory) && rn.Contains(platformIdentifier) && rn.Contains("zip"));
-            if (matchingResource == null) return null;
-            return assembly.GetManifestResourceStream(matchingResource);
         }
 
         private string GetPlatformIdentifier()
