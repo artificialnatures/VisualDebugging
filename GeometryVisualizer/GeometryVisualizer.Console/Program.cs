@@ -26,7 +26,7 @@ namespace GeometryVisualizer.Console
         static void Start()
         {
             var processFactory = new ProcessFactory();
-            process = processFactory.CreateVisualizerProcess(VisualizerType.UnityEditor);
+            process = processFactory.CreateVisualizerProcess(VisualizerType.Unity);
             process.Start();
             geometryFactory = new GeometryFactory();
         }
