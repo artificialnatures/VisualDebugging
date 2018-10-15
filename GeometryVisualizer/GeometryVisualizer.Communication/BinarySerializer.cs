@@ -41,7 +41,7 @@ namespace GeometryVisualizer.Communication
 
         public byte[] GetBytes(Stream stream)
         {
-            var buffer = new byte[4096];
+            var buffer = new byte[Constants.BufferSize];
             var dataLength = stream.Read(buffer, 0, buffer.Length);
             var bytes = new byte[dataLength];
             Array.Copy(buffer, bytes, bytes.Length);

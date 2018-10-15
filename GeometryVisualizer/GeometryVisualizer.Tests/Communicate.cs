@@ -79,5 +79,41 @@ namespace GeometryVisualizer.Tests
             secondaryCommunicator.Disconnect();
             primaryCommunicator.Disconnect();
         }
+
+        [Fact]
+        public void SecondaryWithoutPrimaryTimesOut()
+        {
+            var serializerFactory = new SerializerFactory();
+            var serializer = serializerFactory.CreateSerializer();
+            
+            var communicatorFactory = new CommunicatorFactory();
+            
+            var secondaryCommunicator = communicatorFactory.CreateSecondaryCommunicator(serializer);
+            secondaryCommunicator.Connect();
+
+            Task.Delay(Constants.ConnectionTimeout + 1000).Wait();
+            
+            Assert.False(secondaryCommunicator.IsConnected);
+        }
+
+        [Fact]
+        public void SecondaryTriesRepeatedlyToConnect()
+        {
+            var serializerFactory = new SerializerFactory();
+            var serializer = serializerFactory.CreateSerializer();
+            
+            var communicatorFactory = new CommunicatorFactory();
+            var primaryCommunicator = communicatorFactory.CreatePrimaryCommunicator(serializer);
+            var secondaryCommunicator = communicatorFactory.CreateSecondaryCommunicator(serializer);
+            secondaryCommunicator.Connect();
+
+            Task.Delay(Constants.ConnectionTimeout * 3).Wait();
+            Assert.False(secondaryCommunicator.IsConnected);
+            
+            primaryCommunicator.Connect();
+            Task.Delay(Constants.ConnectionTimeout * 2).Wait();
+            
+            Assert.True(secondaryCommunicator.IsConnected);
+        }
     }
 }

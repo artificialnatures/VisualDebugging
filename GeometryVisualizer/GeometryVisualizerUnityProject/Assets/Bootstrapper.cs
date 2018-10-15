@@ -13,7 +13,7 @@ namespace GeometryVisualizer.Unity
 			var serializerFactory = new SerializerFactory();
 			var serializer = serializerFactory.CreateSerializer();
 			var communicatorFactory = new CommunicatorFactory();
-			communicator = communicatorFactory.CreateSecondaryCommunicator(serializer);
+			communicator = communicatorFactory.CreatePrimaryCommunicator(serializer);
 			visualizer = factory.CreateVisualizer(scene, serializer, communicator);
 		}
 

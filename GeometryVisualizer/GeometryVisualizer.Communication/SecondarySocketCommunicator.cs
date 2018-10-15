@@ -1,5 +1,7 @@
+using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace GeometryVisualizer.Communication
@@ -8,15 +10,12 @@ namespace GeometryVisualizer.Communication
     {
         public override void Connect()
         {
-            Task.Run(() =>
-            {
-                client.Connect(address, port);
-                OnConnected();
-            });
+            Task.Run(() => StartConnecting());
         }
 
         public override void Disconnect()
         {
+            shouldAttemptToConnect = false;
             IsConnected = false;
             client.Close();
         }
@@ -26,14 +25,45 @@ namespace GeometryVisualizer.Communication
             client = new TcpClient();
             this.address = IPAddress.Parse(address);
             this.port = port;
+            shouldAttemptToConnect = true;
         }
 
-        private void OnConnected()
+        private async void StartConnecting()
         {
-            if (!client.Connected) return;
+            while (shouldAttemptToConnect)
+            {
+                await TryConnecting();
+                if (IsConnected) break;
+            }
+        }
+
+        private async Task<bool> TryConnecting()
+        {
+            var tokenSource = new CancellationTokenSource();
+            tokenSource.CancelAfter(Constants.ConnectionTimeout);
+            return await Task.Run(() =>
+            {
+                try
+                {
+                    client.Connect(address, port);
+                    return OnConnected();
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception);
+                    return false;
+                }
+            }, tokenSource.Token);
+        }
+
+        private bool OnConnected()
+        {
+            if (!client.Connected) return false;
             IsConnected = true;
             clientStream = client.GetStream();
             Task.Run(() => SendAndReceive());
+            Console.WriteLine("Secondary communicator connected to primary.");
+            return true;
         }
 
         private void SendAndReceive()
@@ -67,5 +97,6 @@ namespace GeometryVisualizer.Communication
         private NetworkStream clientStream;
         private IPAddress address;
         private int port;
+        private bool shouldAttemptToConnect;
     }
 }

@@ -14,11 +14,16 @@ namespace GeometryVisualizer.Process
         public void Start()
         {
             if (startInfo == null) return;
-            Communicator.Connect();
-            Task.Delay(500).Wait();
             process = System.Diagnostics.Process.Start(startInfo);
-            Task.Delay(500).Wait();
-            if (Communicator.IsConnected) Console.WriteLine("Connected to visualizer.");
+            var windowHandle = WaitForWindowHandle();
+            if (windowHandle != nullPointer)
+            {
+                Communicator.Connect();
+            }
+            else
+            {
+                Console.WriteLine("Visualizer did not start.");
+            }
         }
 
         public void Stop()
@@ -41,6 +46,19 @@ namespace GeometryVisualizer.Process
             Communicator = communicator;
         }
 
+        private IntPtr WaitForWindowHandle()
+        {
+            var numberOfAttempts = 20;
+            while (numberOfAttempts > 0)
+            {
+                Task.Delay(250).Wait();
+                if (process.MainWindowHandle != nullPointer) return process.MainWindowHandle;
+                numberOfAttempts--;
+            }
+
+            return process.MainWindowHandle;
+        }
+
         private Dictionary<string, string> CreateExecutableMap()
         {
             return new Dictionary<string, string>
@@ -53,9 +71,13 @@ namespace GeometryVisualizer.Process
 
         private ProcessStartInfo GetStartInfo(string platformIdentifier)
         {
-            var info = new ProcessStartInfo(executableMap[platformIdentifier]);
-            info.Arguments = " -nolog";
-            info.WindowStyle = ProcessWindowStyle.Normal;
+            var info = new ProcessStartInfo(executableMap[platformIdentifier])
+            {
+                Arguments = " -nolog",
+                RedirectStandardError = true,
+                RedirectStandardOutput = true,
+                WindowStyle = ProcessWindowStyle.Normal
+            };
             return info;
         }
 
@@ -73,5 +95,7 @@ namespace GeometryVisualizer.Process
         private Dictionary<string, string> executableMap;
 
         private static readonly string executableDirectory = "GeometryVisualizer";
+        
+        private static readonly IntPtr nullPointer = new IntPtr();
     }
 }

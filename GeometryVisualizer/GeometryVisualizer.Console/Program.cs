@@ -20,6 +20,7 @@ namespace GeometryVisualizer.Console
                 if (input.StartsWith("v")) AddVertex(input);
                 if (input.StartsWith("t")) AddTriangle(input);
                 if (input.StartsWith("c")) SetColor(input);
+                if (input.StartsWith("r")) Reconnect();
             }
         }
 
@@ -89,6 +90,16 @@ namespace GeometryVisualizer.Console
 
         static void PrintHelp()
         {
+            System.Console.WriteLine("GeometryVisualizer");
+            if (process.Communicator.IsConnected)
+            {
+                System.Console.WriteLine("Connected to visualizer");
+            }
+            else
+            {
+                System.Console.WriteLine("Could not connect to visualizer");
+            }
+            System.Console.WriteLine("-----------------------------------------------");
             System.Console.WriteLine("Commands:");
             System.Console.WriteLine("h[elp] - show this list");
             System.Console.WriteLine("q[uit] - exits program");
@@ -98,6 +109,13 @@ namespace GeometryVisualizer.Console
             System.Console.WriteLine("v[ertex] x y z - add a vertex");
             System.Console.WriteLine("t[riangle] 0 1 2 - a a triangle");
             System.Console.WriteLine("s[end] - sends the geometetry to the visualizer");
+            System.Console.WriteLine("r[econnect] - attempt to reconnect to the visualizer");
+        }
+
+        static void Reconnect()
+        {
+            if (process.Communicator.IsConnected) process.Communicator.Disconnect();
+            process.Communicator.Connect();
         }
 
         static void Quit()

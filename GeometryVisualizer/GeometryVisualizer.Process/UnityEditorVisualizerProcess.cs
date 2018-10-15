@@ -1,4 +1,3 @@
-using System;
 using GeometryVisualizer.Communication;
 
 namespace GeometryVisualizer.Process
@@ -10,7 +9,6 @@ namespace GeometryVisualizer.Process
         public void Start()
         {
             Communicator.Connect();
-            Console.WriteLine("Communicator started. Press play in Unity Editor.");
         }
 
         public void Stop()
