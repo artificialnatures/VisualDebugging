@@ -10,8 +10,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="$(SolutionDir)\Package\contentFiles\**" CopyToOutputDirectory="PreserveNewest" />
-    <None Remove="GeometryVisualizer\**" />
+    <Content Include="..\Package\contentFiles\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -20,6 +21,10 @@
 
   <ItemGroup>
     <EmbeddedResource Remove="GeometryVisualizer\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="GeometryVisualizer\**" />
   </ItemGroup>
 
 </Project>
