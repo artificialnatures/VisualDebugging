@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Threading.Tasks;
 using GeometryVisualizer.Communication;
 
 namespace GeometryVisualizer.Process
@@ -15,15 +14,7 @@ namespace GeometryVisualizer.Process
         {
             if (startInfo == null) return;
             process = System.Diagnostics.Process.Start(startInfo);
-            var windowHandle = WaitForWindowHandle();
-            if (windowHandle != nullPointer)
-            {
-                Communicator.Connect();
-            }
-            else
-            {
-                Console.WriteLine("Visualizer did not start.");
-            }
+            Communicator.Connect();
         }
 
         public void Stop()
@@ -44,19 +35,6 @@ namespace GeometryVisualizer.Process
             }
 
             Communicator = communicator;
-        }
-
-        private IntPtr WaitForWindowHandle()
-        {
-            var numberOfAttempts = 20;
-            while (numberOfAttempts > 0)
-            {
-                Task.Delay(250).Wait();
-                if (process.MainWindowHandle != nullPointer) return process.MainWindowHandle;
-                numberOfAttempts--;
-            }
-
-            return process.MainWindowHandle;
         }
 
         private Dictionary<string, string> CreateExecutableMap()
