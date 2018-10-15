@@ -10,16 +10,17 @@ namespace GeometryVisualizer.Console
             Start();
             while (isRunning)
             {
-                var input = System.Console.ReadLine().ToLower();
+                var input = System.Console.ReadLine();
                 if (input == null) continue;
+                input = input.ToLower();
                 if (input.StartsWith("q")) Quit();
                 if (input.StartsWith("h")) PrintHelp();
                 if (input.StartsWith("p")) SendPlane();
                 if (input.StartsWith("m")) BeginMesh();
                 if (input.StartsWith("s")) SendMesh();
-                if (input.StartsWith("v")) AddVertex(input);
-                if (input.StartsWith("t")) AddTriangle(input);
-                if (input.StartsWith("c")) SetColor(input);
+                if (input.StartsWith("v")) AddVertex(Parse(input));
+                if (input.StartsWith("t")) AddTriangle(Parse(input));
+                if (input.StartsWith("c")) SetColor(Parse(input));
                 if (input.StartsWith("r")) Reconnect();
             }
         }
@@ -32,14 +33,18 @@ namespace GeometryVisualizer.Console
             geometryFactory = new GeometryFactory();
         }
 
+        static string[] Parse(string input)
+        {
+            return input.Split(" ");
+        }
+
         static void BeginMesh()
         {
             geometryFactory.BeginMesh("Mesh");
         }
 
-        static void SetColor(string input)
+        static void SetColor(string[] components)
         {
-            var components = input.Split(" ");
             if (components.Length != 5) return;
             float.TryParse(components[1], out var r);
             float.TryParse(components[2], out var g);
@@ -48,9 +53,8 @@ namespace GeometryVisualizer.Console
             geometryFactory.SetColor(r, g, b, a);
         }
 
-        static void AddVertex(string input)
+        static void AddVertex(string[] components)
         {
-            var components = input.Split(" ");
             if (components.Length != 4) return;
             float.TryParse(components[1], out var x);
             float.TryParse(components[2], out var y);
@@ -58,9 +62,8 @@ namespace GeometryVisualizer.Console
             geometryFactory.AddVertex(x, y, z);
         }
 
-        static void AddTriangle(string input)
+        static void AddTriangle(string[] components)
         {
-            var components = input.Split(" ");
             if (components.Length != 4) return;
             int.TryParse(components[1], out var i0);
             int.TryParse(components[2], out var i1);
@@ -91,6 +94,7 @@ namespace GeometryVisualizer.Console
         static void PrintHelp()
         {
             System.Console.WriteLine("GeometryVisualizer");
+            System.Console.WriteLine("-----------------------------------------------");
             if (process.Communicator.IsConnected)
             {
                 System.Console.WriteLine("Connected to visualizer");

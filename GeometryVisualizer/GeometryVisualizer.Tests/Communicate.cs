@@ -94,6 +94,8 @@ namespace GeometryVisualizer.Tests
             Task.Delay(Constants.ConnectionTimeout + 1000).Wait();
             
             Assert.False(secondaryCommunicator.IsConnected);
+            
+            secondaryCommunicator.Disconnect();
         }
 
         [Fact]
@@ -114,6 +116,9 @@ namespace GeometryVisualizer.Tests
             Task.Delay(Constants.ConnectionTimeout * 2).Wait();
             
             Assert.True(secondaryCommunicator.IsConnected);
+            
+            secondaryCommunicator.Disconnect();
+            primaryCommunicator.Disconnect();
         }
     }
 }
